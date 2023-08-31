@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Proyecto.Models;
 using Proyecto.Services;
 using Proyecto.ViewModels;
 
@@ -9,62 +7,62 @@ namespace Proyecto.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class TareaController : ControllerBase
     {
-        private readonly UsuarioService _usuarioService;
+        private readonly TareaService _TareaService;
 
-        public UsuarioController(UsuarioService usuarioService)
+        public TareaController(TareaService TareaService)
         {
-           _usuarioService = usuarioService;
+            _TareaService = TareaService;
         }
 
         [HttpGet]
-        public ActionResult Listar(string? sexo) 
-        { 
+        public ActionResult Listar(int id, int idlist, int idPadre)
+        {
             try
             {
-                var result = _usuarioService.listusuario(sexo);
+                var result = _TareaService.ListTarea(id, idlist, idPadre);
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
-           
+
+         
         }
         [HttpPost]
-        public ActionResult Guardar([FromBody] UsuarioViewModel usuario) 
-        { 
+        public ActionResult Guardar([FromBody] TareaViewModel Tarea)
+        {
             try
             {
-                var result = _usuarioService.Addusuario(usuario);
+                var result = _TareaService.AddTarea(Tarea);
 
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
-
-
+            
         }
         [HttpDelete]
         public ActionResult Eliminar(int id)
         {
             try
             {
-                var result = _usuarioService.Deleteusuario(id);
+                var result = _TareaService.DeleteTarea(id);
 
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
-    
+            
         }
         [HttpPut]
-        public ActionResult Editar(UpdateUsuarioViewModel usuario, int id)
+        public ActionResult Editar(UpdateTareaViewModel tarea, int id)
         {
             try
             {
-                var result = _usuarioService.Updateusuario(usuario, id);
+                var result = _TareaService.UpdateTarea(tarea, id);
 
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
-
+            
         }
     }
 }

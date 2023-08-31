@@ -9,7 +9,7 @@ public partial class ArchivosTarea
 
     public string UrlArchivo { get; set; } = null!;
 
-    public int FechaAlta { get; set; }
+    public DateTime? FechaAlta { get; set; }
 
     public int? IdTarea { get; set; }
 

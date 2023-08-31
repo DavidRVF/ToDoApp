@@ -50,7 +50,7 @@ public partial class BdintroContext : DbContext
 
             entity.ToTable("ListaTarea");
 
-            entity.Property(e => e.FecahTermino).HasColumnType("date");
+            entity.Property(e => e.FechaTermino).HasColumnType("date");
             entity.Property(e => e.FechaAlta).HasColumnType("date");
             entity.Property(e => e.FechaLimite).HasColumnType("date");
             entity.Property(e => e.NombreLista).HasMaxLength(100);

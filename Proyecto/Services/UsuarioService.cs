@@ -38,32 +38,47 @@ namespace Proyecto.Services
 
             return list;
         }
-        public UsuarioViewModel Addusuario(UsuarioViewModel usuario)
+        public GenericResponse<UsuarioViewModel> Addusuario(UsuarioViewModel usuario)
         {
-
-            var entidad = new Usuario
+            GenericResponse<UsuarioViewModel> response = new GenericResponse<UsuarioViewModel>();
+            if (usuario != null) 
             {
-                NombreCompleto = usuario.NombreCompleto,
-                FechaAlta = usuario.FechaAlta,
-                Sexo = usuario.Sexo.ToUpper(),
-                Usuario1 = usuario.Usuario1
-            };
+                var entidad = new Usuario
+                {
 
-            using (var hash = new HMACSHA512())
+                    NombreCompleto = usuario.NombreCompleto,
+                    FechaAlta = usuario.FechaAlta,
+                    Sexo = usuario.Sexo.ToUpper(),
+                    Usuario1 = usuario.Usuario1
+                };
+
+                using (var hash = new HMACSHA512())
+                {
+                    entidad.Contraseña = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(usuario.Contraseña));
+                }
+
+                var add = _bdintroContext.Usuarios.Add(entidad);
+
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idCreated = add.Entity.Id;
+                }
+            }
+            else 
             {
-                entidad.Contraseña = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(usuario.Contraseña));
+                response.mensaje = "error";
+                response.estatus = 400;
             }
 
-            _bdintroContext.Usuarios.Add(entidad);
-
-            _bdintroContext.SaveChanges();
-
-            return usuario;
+            return response;
         
         }
-        public UpdateUsuarioViewModel Updateusuario([FromBody]UpdateUsuarioViewModel usuario, int id)
+        public GenericResponse<UpdateUsuarioViewModel>  Updateusuario([FromBody]UpdateUsuarioViewModel usuario, int id)
         {
-           var contact = _bdintroContext.Usuarios.Find(id);
+            GenericResponse<UpdateUsuarioViewModel> response = new GenericResponse<UpdateUsuarioViewModel>();
+            var contact = _bdintroContext.Usuarios.Find(id);
             if (contact != null)
             {
                 contact.Usuario1 = usuario.Usuario1;
@@ -73,22 +88,49 @@ namespace Proyecto.Services
                 {
                     contact.Contraseña = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(usuario.Contraseña));
                 }
+                var add = _bdintroContext.Usuarios.Update(contact);
+
+
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idUpdated = add.Entity.Id;
+                }
+            }
+            else
+            {
+                response.mensaje = "id invalido";
+                response.estatus = 400;
             }
 
-            _bdintroContext.Usuarios.Update(contact);
-
-            _bdintroContext.SaveChanges();
-
-            return usuario;
-        }
-        public int Deleteusuario( int id)
-        {
-            var contact = _bdintroContext.Usuarios.Find(id);
-            _bdintroContext.Usuarios.Remove(contact);
-
-            _bdintroContext.SaveChanges();
         
-            return id;
+
+            return response;
+        }
+        public GenericResponse<UsuarioViewModel> Deleteusuario( int id)
+        {
+            GenericResponse<UsuarioViewModel> response = new GenericResponse<UsuarioViewModel>();
+            var contact = _bdintroContext.Usuarios.Find(id);
+            if (contact != null) 
+            {
+               
+               var add = _bdintroContext.Usuarios.Remove(contact);
+
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idDelete = add.Entity.Id;
+                }
+            }else
+            {
+                response.mensaje = "Id invalido";
+                response.estatus = 400;
+            }
+      
+        
+            return response;
         }
     }
 }

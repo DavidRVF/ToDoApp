@@ -19,6 +19,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<UsuarioService>();
+builder.Services.AddTransient<ArchivosTareaService>();
+builder.Services.AddTransient<ListaTareaService>();
+builder.Services.AddTransient<TareaService>();
+builder.Services.AddTransient<TipoTareaService>();
 
 
 var app = builder.Build();

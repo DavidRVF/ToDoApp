@@ -13,7 +13,7 @@ public partial class ListaTarea
 
     public DateTime? FechaAlta { get; set; }
 
-    public DateTime? FecahTermino { get; set; }
+    public DateTime? FechaTermino { get; set; }
 
     public DateTime? FechaLimite { get; set; }
 

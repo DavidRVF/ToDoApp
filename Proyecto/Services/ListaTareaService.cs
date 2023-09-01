@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Models;
 using Proyecto.ViewModels;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Proyecto.Services
 {
@@ -10,11 +12,12 @@ namespace Proyecto.Services
     {
         private readonly BdintroContext _bdintroContext;
 
+
         public ListaTareaService(BdintroContext bdintroContext)
         {
             _bdintroContext = bdintroContext;
         }
-
+        
         public List<ListaTarea> listListaTarea(int id, int idUs)
         {
            
@@ -39,24 +42,38 @@ namespace Proyecto.Services
             }
             else 
             {
+               
+
                 var entidad = new ListaTarea
                 {
-                    NombreLista = lista.NombreLista,
+                    NombreLista = lista.NombreLista, 
                     IdUsuario = lista.IdUsuario,
                     FechaAlta = lista.FechaAlta,
                     FechaTermino = lista.FechaTermino,
                     FechaLimite = lista.FechaLimite
+                   
                 };
-
-
-                var add = _bdintroContext.ListaTareas.Add(entidad);
-
-               var addnew = _bdintroContext.SaveChanges();
-                if(addnew == 1)
+                if (entidad.FechaLimite == lista.FechaAlta)
                 {
-                    response.estatus = 200;
-                    response.idCreated = add.Entity.IdUsuario;
+                    response.mensaje = "La fecha alta y la fecha limite no pueden ser iguales";   
                 }
+                else if (entidad.FechaLimite < lista.FechaAlta )
+                {
+                    response.mensaje = "la FechaLimite no puede ser antes de la FechaAlta";
+                }
+                else
+                {
+
+                    var add = _bdintroContext.ListaTareas.Add(entidad);
+
+                    var addnew = _bdintroContext.SaveChanges();
+                    if (addnew == 1)
+                    {
+                        response.estatus = 200;
+                        response.idCreated = add.Entity.IdListaTarea;
+                    }
+                }    
+
             }
             return response;
         }

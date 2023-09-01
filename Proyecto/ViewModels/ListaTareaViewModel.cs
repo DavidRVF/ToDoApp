@@ -1,4 +1,6 @@
-﻿namespace Proyecto.ViewModels
+﻿
+
+namespace Proyecto.ViewModels
 {
     public class ListaTareaViewModel
     {

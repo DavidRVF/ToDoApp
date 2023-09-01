@@ -55,16 +55,27 @@ namespace Proyecto.Services
                     FechaTermino = tarea.FechaTermino,
                     Prioridad = tarea.Prioridad
                 };
-
-
-               var add = _bdintroContext.Tareas.Add(entidad);
-
-               var addnew = _bdintroContext.SaveChanges();
-                if(addnew == 1)
+                if (entidad.FechaLimite < tarea.FechaAlta) 
                 {
-                    response.estatus = 200;
-                    response.idCreated = (int)add.Entity.IdListaTarea;
+                    response.mensaje = "la FechaLimite no puede ser antes de la FechaAlta";
                 }
+                else if(entidad.FechaLimite == tarea.FechaAlta)
+                {
+                    response.mensaje = "La fecha alta y la fecha limite no pueden ser iguales";
+                }
+                else 
+                {
+                    var add = _bdintroContext.Tareas.Add(entidad);
+
+                    var addnew = _bdintroContext.SaveChanges();
+                    if (addnew == 1)
+                    {
+                        response.estatus = 200;
+                        response.idCreated = (int)add.Entity.IdListaTarea;
+                    }
+                }
+
+               
             }
 
 

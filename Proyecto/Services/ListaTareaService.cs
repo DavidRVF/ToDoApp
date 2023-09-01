@@ -94,12 +94,12 @@ namespace Proyecto.Services
                 if (addnew == 1)
                 {
                     response.estatus = 200;
-                    response.idUpdated = add.Entity.IdUsuario;
+                    response.idUpdated = add.Entity.IdListaTarea;
                 }
             }
             else
             {
-                response.mensaje = "IdTarea invalida";
+                response.mensaje = "IdListaTarea invalida";
                 response.estatus = 400;
             }
 

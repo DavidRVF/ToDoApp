@@ -71,7 +71,7 @@ namespace Proyecto.Services
                     if (addnew == 1)
                     {
                         response.estatus = 200;
-                        response.idCreated = (int)add.Entity.IdListaTarea;
+                        response.idCreated = add.Entity.IdTarea;
                     }
                 }
 
@@ -92,9 +92,6 @@ namespace Proyecto.Services
                 contact.Tarea1 = tarea.Tarea1;
                 contact.Descripcion = tarea.Descripcion;
                 contact.FechaLimite = tarea.FechaLimite;
-                contact.Terminada = tarea.Terminada;
-                contact.FechaAlta = tarea.FechaAlta;
-                contact.FechaTermino = tarea.FechaTermino;
                 contact.Prioridad = tarea.Prioridad;
                 var add = _bdintroContext.Tareas.Update(contact);
 
@@ -123,7 +120,14 @@ namespace Proyecto.Services
             var contact = _bdintroContext.Tareas.Find(tarea.IdTarea = id);
             if (contact != null)
             {
-                _bdintroContext.Tareas.Remove(contact);
+                var add = _bdintroContext.Tareas.Remove(contact);
+
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idDelete = add.Entity.IdTarea;
+                }
             }
             else
             {
@@ -131,7 +135,6 @@ namespace Proyecto.Services
                 response.estatus = 400;
             }
 
-            _bdintroContext.SaveChanges();
 
             return response;
         }

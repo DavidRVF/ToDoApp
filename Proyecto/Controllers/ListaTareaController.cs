@@ -30,6 +30,21 @@ namespace Proyecto.Controllers
             }
      
         }
+
+        [HttpGet("Buscar")]
+        public ActionResult Buscar(string buscar)
+        {
+            try
+            {
+                var result = _ListaTareaService.BuscarLista(buscar);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
         [HttpPost]
         public ActionResult Guardar([FromBody] ListaTareaViewModel Lista)
         {
@@ -55,7 +70,7 @@ namespace Proyecto.Controllers
          
         }
         [HttpPut]
-        public ActionResult Editar(ListaTareaViewModel Lista, int id)
+        public ActionResult Editar(UpdateListaTareaViewModel Lista, int id)
         {
             try {
                 var result = _ListaTareaService.UpdateListaTarea(Lista, id);
@@ -64,6 +79,18 @@ namespace Proyecto.Controllers
             }
             catch(Exception ex) {return BadRequest(ex.Message); }
             
+        }
+        [HttpPut("FechaTermino")]
+        public ActionResult EditarFechaTermino(UpdateListaTareaViewModel Lista, int id)
+        {
+            try
+            {
+                var result = _ListaTareaService.UpdateFechaTermino(Lista, id);
+
+                return Ok(result);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+
         }
     }
 }

@@ -18,19 +18,14 @@ namespace Proyecto.Services
 
         public List<ArchivosTarea> listArchivoTarea(int id, int idArc)
         {
-            GenericResponse<ArchivosTarea> response = new GenericResponse<ArchivosTarea>();
-
             var listid = _bdintroContext.ArchivosTareas.Where(x => x.IdTarea == idArc || x.IdArchivo == id).Select(ID => new ArchivosTarea
             {
-
                 IdArchivo = ID.IdArchivo,
                 UrlArchivo = ID.UrlArchivo,
                 FechaAlta = ID.FechaAlta,
                 IdTarea = ID.IdTarea,
-
             }).ToList();
-
-
+                    
             return listid;
 
         }
@@ -71,7 +66,7 @@ namespace Proyecto.Services
             ArchivosTarea arch = new ArchivosTarea();
             GenericResponse<ArchivoTareaViewModel> response = new GenericResponse<ArchivoTareaViewModel>();
             var contact = _bdintroContext.ArchivosTareas.Find(arch.IdArchivo = id);
-            if (contact == null )
+            if (contact == null || contact.IdArchivo == 0)
             {
                 response.mensaje = "Id invalida";
                 response.estatus = 400;
@@ -80,7 +75,6 @@ namespace Proyecto.Services
             else
             {
                 contact.UrlArchivo = archivos.UrlArchivo;
-                contact.FechaAlta = archivos.FechaAlta;
 
                 var add = _bdintroContext.ArchivosTareas.Update(contact);
 

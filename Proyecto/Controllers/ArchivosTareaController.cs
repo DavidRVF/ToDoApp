@@ -22,8 +22,8 @@ namespace Proyecto.Controllers
         {
             try
             {
-                var result = _ArchivosTareaService.listArchivoTarea(id, idArc);
-                return Ok(result);
+               var result = _ArchivosTareaService.listArchivoTarea(id, idArc);
+               return Ok(result);                
             }
             catch (Exception ex) 
             {

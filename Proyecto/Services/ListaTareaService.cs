@@ -17,7 +17,14 @@ namespace Proyecto.Services
         {
             _bdintroContext = bdintroContext;
         }
-        
+        public List<ListaTarea> BuscarLista(string buscar)
+        {
+            var filtrar = _bdintroContext.ListaTareas.Where(x => x.NombreLista.Contains(buscar)).OrderBy(x => x.NombreLista ).Select(Nombre => new ListaTarea
+            {
+                NombreLista = Nombre.NombreLista,
+            }).ToList();
+            return filtrar;
+        }
         public List<ListaTarea> listListaTarea(int id, int idUs)
         {
            
@@ -57,7 +64,7 @@ namespace Proyecto.Services
                 {
                     response.mensaje = "La fecha alta y la fecha limite no pueden ser iguales";   
                 }
-                else if (entidad.FechaLimite < lista.FechaAlta )
+                else if (entidad.FechaLimite < lista.FechaAlta)
                 {
                     response.mensaje = "la FechaLimite no puede ser antes de la FechaAlta";
                 }
@@ -77,16 +84,15 @@ namespace Proyecto.Services
             }
             return response;
         }
-        public GenericResponse<ListaTareaViewModel> UpdateListaTarea([FromBody] ListaTareaViewModel lista, int id)
+        public GenericResponse<UpdateListaTareaViewModel> UpdateListaTarea([FromBody] UpdateListaTareaViewModel lista, int id)
         {
             ListaTarea list = new ListaTarea();
-            GenericResponse<ListaTareaViewModel> response = new GenericResponse<ListaTareaViewModel>();
+            GenericResponse<UpdateListaTareaViewModel> response = new GenericResponse<UpdateListaTareaViewModel>();
 
             var contact = _bdintroContext.ListaTareas.Find(list.IdListaTarea = id);
             if (contact != null)
             {
                 contact.NombreLista = lista.NombreLista;
-                contact.FechaAlta = lista.FechaAlta;
                 contact.FechaLimite = lista.FechaLimite;
                 contact.FechaTermino = lista.FechaTermino;
                 var add = _bdintroContext.ListaTareas.Update(contact);
@@ -99,7 +105,31 @@ namespace Proyecto.Services
             }
             else
             {
-                response.mensaje = "IdListaTarea invalida";
+                response.mensaje = "IdListaTarea° invalida";
+                response.estatus = 400;
+            }
+
+            return response;
+        }
+        public GenericResponse<UpdateListaTareaViewModel> UpdateFechaTermino([FromBody] UpdateListaTareaViewModel lista, int id)
+        {
+            ListaTarea list = new ListaTarea();
+            GenericResponse<UpdateListaTareaViewModel> response = new GenericResponse<UpdateListaTareaViewModel>();
+            var contact = _bdintroContext.ListaTareas.Find(list.IdListaTarea = id);
+            if (contact != null)
+            {
+                contact.FechaTermino = lista.FechaTermino;
+                var add = _bdintroContext.ListaTareas.Update(contact);
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idUpdated = add.Entity.IdListaTarea;
+                }
+            }
+            else
+            {
+                response.mensaje = "IdListaTarea° invalida";
                 response.estatus = 400;
             }
 

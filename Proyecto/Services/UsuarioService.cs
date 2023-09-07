@@ -41,7 +41,7 @@ namespace Proyecto.Services
         public GenericResponse<UsuarioViewModel> Addusuario(UsuarioViewModel usuario)
         {
             GenericResponse<UsuarioViewModel> response = new GenericResponse<UsuarioViewModel>();
-            if (usuario != null) 
+            if (usuario != null)
             {
                 var entidad = new Usuario
                 {
@@ -56,15 +56,22 @@ namespace Proyecto.Services
                 {
                     entidad.Contraseña = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(usuario.Contraseña));
                 }
-
-                var add = _bdintroContext.Usuarios.Add(entidad);
-
-                var addnew = _bdintroContext.SaveChanges();
-                if (addnew == 1)
+                if (entidad.Sexo != "F" || entidad.Sexo != "M")
                 {
-                    response.estatus = 200;
-                    response.idCreated = add.Entity.Id;
+                    response.mensaje = "Porfavor escribe solo F (Femenino) y M (Masculino)";
                 }
+                else
+                {
+                    var add = _bdintroContext.Usuarios.Add(entidad);
+
+                    var addnew = _bdintroContext.SaveChanges();
+                    if (addnew == 1)
+                    {
+                        response.estatus = 200;
+                        response.idCreated = add.Entity.Id;
+                    }
+                }
+
             }
             else 
             {

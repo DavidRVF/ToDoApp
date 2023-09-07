@@ -2,9 +2,8 @@
 {
     public class UpdateListaTareaViewModel
     {
+        public int IdListaTarea { get; set; }
         public string NombreLista { get; set; } = null!;
-
-        public DateTime? FechaTermino { get; set; }
 
         public DateTime? FechaLimite { get; set; }
     }

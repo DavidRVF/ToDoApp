@@ -13,10 +13,28 @@ namespace Proyecto.Services
         {
             _bdintroContext = bdintroContext;
         }
-
-        public List<Tarea> ListTarea(int id, int idlist, int idPadre)
+        public Tarea DetalleTarea(int id)
         {
-            var list = _bdintroContext.Tareas.Where(x => x.IdTarea == id || x.IdListaTarea == idlist || x.IdTareaPadre == idPadre).Select(ID => new Tarea
+            var list = _bdintroContext.Tareas.Where(x => x.IdTarea == id).OrderBy(x => x.IdTarea).Select(ID => new Tarea
+            {
+                IdTarea = ID.IdTarea,
+                IdListaTarea = ID.IdListaTarea,
+                Tarea1 = ID.Tarea1,
+                Descripcion = ID.Descripcion,
+                FechaLimite = ID.FechaLimite,
+                IdTareaPadre = ID.IdTareaPadre,
+                Terminada = ID.Terminada,
+                FechaAlta = ID.FechaAlta,
+                FechaTermino = ID.FechaTermino,
+                Prioridad = ID.Prioridad,
+
+            }).FirstOrDefault();
+
+            return list;
+        }
+        public List<Tarea> ListTarea(int idlist, int idPadre, string tarea)
+        {
+            var list = _bdintroContext.Tareas.Where(x => x.IdListaTarea == idlist || x.IdTareaPadre == idPadre || x.Tarea1.Contains(tarea)).OrderBy(x => x.IdTarea).Select(ID => new Tarea
             {
                 IdTarea = ID.IdTarea,
                 IdListaTarea = ID.IdListaTarea,
@@ -110,6 +128,34 @@ namespace Proyecto.Services
             }
 
      
+
+            return response;
+        }
+        public GenericResponse<UpdateFechaTerminoViewModel> UpdateFechaTermino([FromBody] UpdateFechaTerminoViewModel tarea, int id)
+        {
+       
+            GenericResponse<UpdateFechaTerminoViewModel> response = new GenericResponse<UpdateFechaTerminoViewModel>();
+            var contact = _bdintroContext.Tareas.Find(tarea.IdTarea = id);
+            if (contact != null)
+            {
+                contact.FechaTermino = tarea.FechaTermino;
+                var add = _bdintroContext.Tareas.Update(contact);
+
+                var addnew = _bdintroContext.SaveChanges();
+                if (addnew == 1)
+                {
+                    response.estatus = 200;
+                    response.idUpdated = add.Entity.IdTarea;
+                }
+
+            }
+            else
+            {
+                response.mensaje = "IdTarea invalida";
+                response.estatus = 400;
+            }
+
+
 
             return response;
         }

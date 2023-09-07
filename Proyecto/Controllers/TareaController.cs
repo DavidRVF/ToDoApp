@@ -17,16 +17,28 @@ namespace Proyecto.Controllers
         }
 
         [HttpGet]
-        public ActionResult Listar(int id, int idlist, int idPadre)
+        public ActionResult Listar(int idlist, int idPadre, string tarea)
         {
             try
             {
-                var result = _TareaService.ListTarea(id, idlist, idPadre);
+                var result = _TareaService.ListTarea(idlist, idPadre, tarea);
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
 
          
+        }
+        [HttpGet("Tarea")]
+        public ActionResult DetallesTarea(int id)
+        {
+            try
+            {
+                var result = _TareaService.DetalleTarea(id);
+                return Ok(result);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+
+
         }
         [HttpPost]
         public ActionResult Guardar([FromBody] TareaViewModel Tarea)

@@ -18,11 +18,11 @@ namespace Proyecto.Controllers
         }
 
         [HttpGet]
-        public ActionResult Listar(int id, int idArc)
+        public ActionResult Listar(int id, int idTarea)
         {
             try
             {
-               var result = _ArchivosTareaService.listArchivoTarea(id, idArc);
+               var result = _ArchivosTareaService.listArchivoTarea(id, idTarea);
                return Ok(result);                
             }
             catch (Exception ex) 

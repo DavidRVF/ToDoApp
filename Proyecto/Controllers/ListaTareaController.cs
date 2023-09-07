@@ -17,11 +17,11 @@ namespace Proyecto.Controllers
         }
 
         [HttpGet]
-        public ActionResult Listar(int id, int IdUs)
+        public ActionResult Listar(int IdUs, string nombre)
         {
             try
             {
-                var result = _ListaTareaService.listListaTarea(id, IdUs);
+                var result = _ListaTareaService.listListaTarea(IdUs, nombre);
                 return Ok(result);
             }
             catch(Exception ex)
@@ -32,11 +32,11 @@ namespace Proyecto.Controllers
         }
 
         [HttpGet("Buscar")]
-        public ActionResult Buscar(string buscar)
+        public ActionResult BuscarListaTarea(int id)
         {
             try
             {
-                var result = _ListaTareaService.BuscarLista(buscar);
+                var result = _ListaTareaService.DetalleListaTarea(id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Proyecto.Controllers
             
         }
         [HttpPut("FechaTermino")]
-        public ActionResult EditarFechaTermino(UpdateListaTareaViewModel Lista, int id)
+        public ActionResult EditarFechaTermino(UpdateFechaTerminoListaTareaViewModel Lista, int id)
         {
             try
             {

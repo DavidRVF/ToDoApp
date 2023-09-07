@@ -15,7 +15,7 @@ namespace Proyecto.Services
         {
             _bdintroContext = bdintroContext;
         }
-
+       
         public List<ArchivosTarea> listArchivoTarea(int id, int idArc)
         {
             var listid = _bdintroContext.ArchivosTareas.Where(x => x.IdTarea == idArc || x.IdArchivo == id).Select(ID => new ArchivosTarea
